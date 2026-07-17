@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
  *     .criadoEm(LocalDateTime.now())
  *     .build();
  *
- * @author pix-inteligente-api
+ * @author Golbery Santos
  */
 public class Transacao {
 
