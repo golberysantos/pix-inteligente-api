@@ -87,15 +87,8 @@ br.com.pixinteligente
 │   │
 │   ├── infrastructure         <-- 2. CAMADA DE INFRAESTRUTURA (Detalhes de tecnologia)
 │   │   ├── persistence        <-- Entidades JPA (@Entity) e Interfaces Spring Data
-│   │   │   ├── TransacaoEntity.java
-│   │   │   └── SpringDataPixRepository.java
 │   │   ├── adapter     <-- Implementação do PixRepository (faz o de/para Entity <-> Domain)
-│   │   │   └── PixRepositoryAdapter.java
 │   │   └── gemini             <-- Integração com a API do Gemini
-│   │       ├── GeminiClient.java (HTTP/Feign/RestClient)
-│   │       ├── GeminiResponse.java (DTO da API externa)
-│   │       └── GeminiAdapter.java (Implementa o Adapter Pattern para o formato de negócio)
-│   │
 │   └── presentation           <-- 3. CAMADA DE APRESENTAÇÃO / MVC / REST
 │       ├── controller         <-- Endpoints HTTP (@RestController)
 │       ├── dto                <-- Request/Response DTOs (com Bean Validation)
