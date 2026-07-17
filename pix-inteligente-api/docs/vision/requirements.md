@@ -35,7 +35,7 @@ GeminiAdapterTest — valida a conversão da resposta da IA.
 Testes de integração — sobem o contexto do Spring e testam o fluxo completo:
 PixControllerTest — testa os endpoints REST com MockMvc.
 
-Irei aplicar os Padrões de Projeto:
+Padrões de Projeto:
 ### Clean Architecture
 ### MVC
 ### RESTFull
