@@ -69,8 +69,7 @@ public class Transacao {
      * Builder interno da classe Transacao.
      *
      * Implementação manual do padrão Builder (Creational) sem dependência
-     * de frameworks como Lombok — tornando o padrão explícito e didático
-     * para fins de avaliação do desafio.
+     * de frameworks como Lombok.
      */
     public static class Builder {
 
