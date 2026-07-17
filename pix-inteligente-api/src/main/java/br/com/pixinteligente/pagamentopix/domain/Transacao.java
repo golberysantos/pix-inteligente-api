@@ -1,4 +1,4 @@
-package br.com.pixinteligente.domain;
+package br.com.pixinteligente.pagamentopix.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
