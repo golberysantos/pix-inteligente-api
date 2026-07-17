@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
  * .cpfOrigem("111.111.111-11") .cpfDestino("222.222.222-22") .valor(new
  * BigDecimal("500.00")) .build();
  *
- * @author pix-inteligente-api
+ * @author Golbery Santos
  */
 @Entity
 @Table(name = "transacoes")
