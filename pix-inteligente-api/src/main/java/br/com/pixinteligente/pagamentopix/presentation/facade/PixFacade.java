@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Fachada que simplifica a interação entre o Controller e as camadas internas.
+ * Implementação da porta PixFacadePort.
  *
  * Padrão aplicado: Facade (Structural)
  * Esconde a complexidade do fluxo completo de uma transferência Pix:
@@ -20,16 +20,14 @@ import java.util.stream.Collectors;
  * 2. Analisar com IA via GeminiAdapter (Adapter Pattern)
  * 3. Notificar via ServicoNotificacao (Template Method Pattern)
  *
- * O Controller não precisa conhecer nenhum desses detalhes —
- * ele apenas chama a Facade e recebe o resultado pronto.
- *
- * Sem a Facade, o Controller precisaria orquestrar tudo isso,
- * violando o princípio de responsabilidade única.
+ * Princípio SOLID aplicado: Dependency Inversion (DIP)
+ * Implementa PixFacadePort — o Controller depende da interface,
+ * não desta classe concreta.
  *
  * @author Golbery Santos
  */
 @Component
-public class PixFacade {
+public class PixFacade implements PixFacadePort {
 
     private final PixService pixService;
     private final GeminiAdapter geminiAdapter;
@@ -55,40 +53,24 @@ public class PixFacade {
      * @param request DTO de entrada com os dados da transferência.
      * @return PixResponse com o resultado da operação.
      */
+    @Override
     public PixResponse processarTransferencia(PixRequest request) {
-
-        // 1. Processa a transação — Strategy em ação (diurno/noturno)
         Transacao transacao = pixService.processarPix(
                 request.cpfOrigem(),
                 request.cpfDestino(),
                 request.valor()
         );
-
-        // 2. Analisa com IA — Adapter em ação
         Transacao transacaoAnalisada = geminiAdapter.analisarEAplicar(transacao);
-
-        // 3. Notifica o resultado — Template Method em ação
         servicoNotificacao.notificar(transacaoAnalisada);
-
-        // 4. Converte para DTO e retorna
         return PixResponse.fromDomain(transacaoAnalisada);
     }
 
-    /**
-     * Busca uma transação Pix pelo ID.
-     *
-     * @param id Identificador da transação.
-     * @return PixResponse com os dados da transação.
-     */
+    @Override
     public PixResponse buscarPorId(Long id) {
         return PixResponse.fromDomain(pixService.buscarPorId(id));
     }
 
-    /**
-     * Lista todas as transações Pix registradas.
-     *
-     * @return Lista de PixResponse com todas as transações.
-     */
+    @Override
     public List<PixResponse> listarTodas() {
         return pixService.listarTodas()
                 .stream()
@@ -96,12 +78,7 @@ public class PixFacade {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Lista transações Pix por CPF de origem.
-     *
-     * @param cpfOrigem CPF do titular da conta de origem.
-     * @return Lista de PixResponse do CPF informado.
-     */
+    @Override
     public List<PixResponse> listarPorCpfOrigem(String cpfOrigem) {
         return pixService.listarPorCpfOrigem(cpfOrigem)
                 .stream()

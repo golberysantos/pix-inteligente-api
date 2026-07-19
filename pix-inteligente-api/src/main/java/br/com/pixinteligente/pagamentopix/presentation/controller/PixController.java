@@ -32,7 +32,7 @@ import java.util.List;
  * mapeamentos de rota ficam na interface, mantendo esta classe
  * limpa e focada apenas na implementação dos métodos.
  *
- * @author pix-inteligente-api
+ * @author Golbery Santos
  */
 @RestController
 public class PixController implements PixControllerApi {

@@ -17,7 +17,7 @@ import java.util.List;
  * - Facilita testes — basta mockar esta interface no PixControllerTest.
  * - Permite múltiplas implementações da Facade sem alterar o Controller.
  *
- * @author pix-inteligente-api
+ * @author Golbery Santos
  */
 public interface PixFacadePort {
 

@@ -30,7 +30,7 @@ import java.util.List;
  * - É possível ter múltiplas implementações do contrato (ex: versão v2).
  * - Facilita testes — basta mockar a interface.
  *
- * @author pix-inteligente-api
+ * @author Golbery Santos
  */
 @Tag(name = "Pix", description = "Endpoints para transferências e consultas Pix")
 @RequestMapping("/api/pix")

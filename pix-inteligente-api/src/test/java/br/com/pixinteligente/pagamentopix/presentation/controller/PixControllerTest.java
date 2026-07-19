@@ -1,17 +1,12 @@
 package br.com.pixinteligente.pagamentopix.presentation.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-
+import br.com.pixinteligente.pagamentopix.domain.exception.LimiteExcedidoException;
+import br.com.pixinteligente.pagamentopix.domain.exception.TransacaoNaoEncontradaException;
+import br.com.pixinteligente.pagamentopix.domain.model.Transacao.StatusTransacao;
+import br.com.pixinteligente.pagamentopix.presentation.dto.PixRequest;
+import br.com.pixinteligente.pagamentopix.presentation.dto.PixResponse;
+import br.com.pixinteligente.pagamentopix.presentation.facade.PixFacadePort;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +16,17 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import br.com.pixinteligente.pagamentopix.domain.exception.LimiteExcedidoException;
-import br.com.pixinteligente.pagamentopix.domain.exception.TransacaoNaoEncontradaException;
-import br.com.pixinteligente.pagamentopix.domain.model.Transacao.StatusTransacao;
-import br.com.pixinteligente.pagamentopix.presentation.dto.PixRequest;
-import br.com.pixinteligente.pagamentopix.presentation.dto.PixResponse;
-import br.com.pixinteligente.pagamentopix.presentation.facade.PixFacade;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Testes de integração do PixController.
@@ -37,7 +35,9 @@ import br.com.pixinteligente.pagamentopix.presentation.facade.PixFacade;
  * A PixFacade é substituída por um Mock do Mockito.
  * Usa MockMvc para simular requisições HTTP.
  *
- * @author Golbery Santos
+ * @MockitoBean substitui @MockBean a partir do Spring Boot 3.4.x.
+ *
+ * @author pix-inteligente-api
  */
 @WebMvcTest(PixController.class)
 class PixControllerTest {
@@ -49,7 +49,7 @@ class PixControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private PixFacade pixFacade;
+    private PixFacadePort pixFacade;
 
     // ==========================================
     // Testes de POST /api/pix/transferir
