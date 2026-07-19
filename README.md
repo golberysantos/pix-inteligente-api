@@ -1,7 +1,14 @@
 # Pix Inteligente API
 
+[![Java Version](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2+-brightgreen?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
+[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20Screaming-blue?style=for-the-badge)](https://blog.cleancoder.com/)
+
+
 API REST para transferências Pix com validação inteligente via Google Gemini.
 Projeto desenvolvido como desafio de Padrões de Projeto do Bootcamp Santander 2026 - AI Java Back-end (DIO).
+
+O **Pix Inteligente** é um sistema de transferências financeiras (Pix) com um motor de validação baseado em Inteligência Artificial. A aplicação analisa padrões de transações em tempo real utilizando a **API do Gemini** (Google) para detectar potenciais fraudes ou anomalias antes de aprovar a transferência.
 
 ---
 
