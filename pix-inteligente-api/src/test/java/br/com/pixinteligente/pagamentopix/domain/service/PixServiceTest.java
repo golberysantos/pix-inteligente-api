@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
  * sem subir o contexto do Spring, sem banco de dados.
  * O PixRepository é substituído por um Mock do Mockito.
  *
- * @author Golbery Santos
+ * @author pix-inteligente-api
  */
 @ExtendWith(MockitoExtension.class)
 class PixServiceTest {
@@ -83,9 +83,11 @@ class PixServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar LimiteExcedidoException quando valor ultrapassa limite diurno")
+    @DisplayName("Deve lançar LimiteExcedidoException quando valor ultrapassa qualquer limite")
     void deveLancarExcecaoQuandoValorUltrapassaLimiteDiurno() {
         // Arrange
+        // Valor acima de R$ 10.000,00 — ultrapassa tanto o limite diurno
+        // quanto o noturno, independente do horário de execução do teste
         BigDecimal valorAcimaDoLimite = new BigDecimal("15000.00");
 
         // Act & Assert
@@ -94,8 +96,10 @@ class PixServiceTest {
                         "111.111.111-11", "222.222.222-22", valorAcimaDoLimite))
                 .isInstanceOf(LimiteExcedidoException.class)
                 .hasMessageContaining("Limite Pix excedido")
-                .hasMessageContaining("15000.00")
-                .hasMessageContaining("10000.00");
+                .hasMessageContaining("15000.00");
+        // Nota: não verificamos o limite exato porque o PixService seleciona
+        // o validador com base no horário real da máquina (diurno ou noturno).
+        // O ValidadorLimiteDiurnoTest cobre os limites específicos de forma isolada.
     }
 
     @Test
