@@ -408,4 +408,103 @@ br.com.pixinteligente
 
 ## Autor
 
+Desenvolvido como desafio de Padrões de Projeto do **Bootcamp Santander 2026 - AI Java Back-end** na plataforma [DIO](https://www.dio.me).
+
+---
+
+## Profiles de Ambiente
+
+O projeto utiliza o sistema de profiles do Spring Boot para separar as configurações por ambiente:
+
+| Arquivo | Profile | Banco | Uso |
+|---------|---------|-------|-----|
+| `application.properties` | default | H2 em memória | Base comum — roda sem configuração |
+| `application-dev.properties` | dev | PostgreSQL | Desenvolvimento local com PostgreSQL |
+| `application-prod.properties` | prod | PostgreSQL | Produção via variáveis de ambiente |
+
+### Como ativar um profile
+
+```bash
+# Via Maven
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Via variável de ambiente
+export SPRING_PROFILES_ACTIVE=dev
+
+# Via IDE (VM arguments)
+-Dspring.profiles.active=dev
+```
+
+### Para testar com PostgreSQL (profile dev)
+
+1. Crie o banco de dados:
+```sql
+CREATE DATABASE pixdb;
+```
+
+2. Ative o profile `dev`:
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+O `application-dev.properties` já está configurado com as credenciais padrão do PostgreSQL (`postgres/postgres`). Ajuste se necessário.
+
+---
+
+## Boas Praticas de Segurança
+
+> **Nota:** O `application-dev.properties` deste projeto contém credenciais explícitas para facilitar a avaliação e os testes do desafio. Essa foi uma decisão consciente para que qualquer avaliador consiga rodar o projeto com PostgreSQL sem esforço de configuração.
+
+**Em um projeto real de produção, nunca faça isso.** A estrutura correta é:
+
+### 1. Nunca exponha credenciais no repositório
+
+```properties
+# ERRADO — nunca faça isso em producao
+spring.datasource.password=minha_senha_secreta
+
+# CORRETO — use variaveis de ambiente
+spring.datasource.password=${DB_PASSWORD}
+```
+
+### 2. Use variáveis de ambiente no servidor
+
+```bash
+# Linux / Mac
+export DB_URL=jdbc:postgresql://localhost:5432/pixdb
+export DB_USERNAME=postgres
+export DB_PASSWORD=senha_segura
+export GEMINI_API_KEY=sua_chave_gemini
+
+# Windows
+set DB_URL=jdbc:postgresql://localhost:5432/pixdb
+set DB_USERNAME=postgres
+set DB_PASSWORD=senha_segura
+set GEMINI_API_KEY=sua_chave_gemini
+```
+
+### 3. Use .gitignore para proteger arquivos sensíveis
+
+```gitignore
+# Arquivos com credenciais locais
+application-dev.properties
+application-local.properties
+.env
+*.env
+```
+
+### 4. A estrutura deste projeto já está pronta
+
+O `application.properties` principal usa a notação `${VARIAVEL:valor_padrao}` em todas as propriedades sensíveis. Para migrar para produção segura, basta:
+
+1. Definir as variáveis de ambiente no servidor.
+2. Ativar o profile `prod`.
+3. Remover ou ignorar o `application-dev.properties`.
+
+Nenhuma linha de código precisa ser alterada.
+
+---
+
+## Autor
+
 Desenvolvido como desafio de Padrões de Projeto do **Bootcamp Santander 2026 - AI Java Back-end** na plataforma [DIO](https://www.dio.me) por Golbery Santos.
