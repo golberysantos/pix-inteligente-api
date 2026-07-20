@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @MockitoBean substitui @MockBean a partir do Spring Boot 3.4.x.
  *
- * @author pix-inteligente-api
+ * @author Golbery Santos
  */
 @WebMvcTest(PixController.class)
 class PixControllerTest {
