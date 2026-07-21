@@ -422,11 +422,6 @@ br.com.pixinteligente
 
 ---
 
-## Autor
-
-Desenvolvido como desafio de Padrões de Projeto do **Bootcamp Santander 2026 - AI Java Back-end** na plataforma [DIO](https://www.dio.me).
-
----
 
 ## Profiles de Ambiente
 
