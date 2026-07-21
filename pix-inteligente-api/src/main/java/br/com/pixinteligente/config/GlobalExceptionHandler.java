@@ -1,7 +1,9 @@
 package br.com.pixinteligente.config;
 
 import br.com.pixinteligente.pagamentopix.domain.exception.PixException;
+import br.com.pixinteligente.pagamentopix.domain.exception.LimiteExcedidoException;
 import br.com.pixinteligente.pagamentopix.presentation.dto.ErroResponse;
+import br.com.pixinteligente.pagamentopix.presentation.dto.LimiteExcedidoResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -47,6 +49,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(ex.getStatusHttp())
                 .body(ErroResponse.of(ex.getStatusHttp(), ex.getMessage()));
+    }
+
+    /**
+     * Captura exceção de limite excedido do Pix.
+     * Retorna HTTP 422 com informações ricas sobre o limite e valor solicitado.
+     *
+     * @param ex Exceção de limite excedido.
+     * @return ResponseEntity com LimiteExcedidoResponse e status HTTP 422.
+     */
+    @ExceptionHandler(LimiteExcedidoException.class)
+    public ResponseEntity<LimiteExcedidoResponse> handleLimiteExcedidoException(
+            LimiteExcedidoException ex) {
+        return ResponseEntity
+                .status(ex.getStatusHttp())
+                .body(LimiteExcedidoResponse.of(
+                        ex.getStatusHttp(),
+                        ex.getMessage(),
+                        ex.getValorSolicitado(),
+                        ex.getLimitePermitido()
+                ));
     }
 
     /**

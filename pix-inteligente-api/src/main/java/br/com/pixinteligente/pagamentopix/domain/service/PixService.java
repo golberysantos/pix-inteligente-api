@@ -5,9 +5,8 @@ import br.com.pixinteligente.pagamentopix.domain.exception.TransacaoNaoEncontrad
 import br.com.pixinteligente.pagamentopix.domain.model.Transacao;
 import br.com.pixinteligente.pagamentopix.domain.model.Transacao.StatusTransacao;
 import br.com.pixinteligente.pagamentopix.domain.repository.PixRepository;
-import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorLimiteDiurno;
-import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorLimiteNoturno;
-import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorPix;
+import br.com.pixinteligente.pagamentopix.domain.strategy.SeletorDeValidador;
+import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorPixComPeriodo;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,24 +30,20 @@ import java.util.List;
 public class PixService {
 
     private final PixRepository pixRepository;
-    private final ValidadorLimiteDiurno validadorDiurno;
-    private final ValidadorLimiteNoturno validadorNoturno;
+    private final SeletorDeValidador seletorDeValidador;
 
     /**
      * Construtor com injeção das dependências do serviço.
      * Sem @Autowired — o domínio não conhece Spring.
      * A injeção será realizada pelo adaptador ou pelo config do Spring.
      *
-     * @param pixRepository    Porta de saída para persistência.
-     * @param validadorDiurno  Estratégia de validação para o período diurno.
-     * @param validadorNoturno Estratégia de validação para o período noturno.
+     * @param pixRepository       Porta de saída para persistência.
+     * @param seletorDeValidador  Seletor dinâmico de estratégias de validação.
      */
     public PixService(PixRepository pixRepository,
-                      ValidadorLimiteDiurno validadorDiurno,
-                      ValidadorLimiteNoturno validadorNoturno) {
+                      SeletorDeValidador seletorDeValidador) {
         this.pixRepository = pixRepository;
-        this.validadorDiurno = validadorDiurno;
-        this.validadorNoturno = validadorNoturno;
+        this.seletorDeValidador = seletorDeValidador;
     }
 
     /**
@@ -82,15 +77,12 @@ public class PixService {
                 .criadoEm(agora)
                 .build();
 
-        // 2. Seleciona a estratégia de validação com base no horário (Strategy)
-        ValidadorPix validador = selecionarValidador(agora);
+        // 2. Seleciona a estratégia de validação com base no horário (Strategy via SeletorDeValidador)
+        ValidadorPixComPeriodo validador = seletorDeValidador.selecionar(agora);
 
         // 3. Valida o limite — lança exceção se violado
         if (!validador.validar(transacao)) {
-            java.math.BigDecimal limite = validador instanceof ValidadorLimiteDiurno
-                    ? validadorDiurno.getLimite()
-                    : validadorNoturno.getLimite();
-            throw new LimiteExcedidoException(valor, limite);
+            throw new LimiteExcedidoException(valor, validador.getLimite());
         }
 
         // 4. Atualiza status para APROVADA via Builder
@@ -161,18 +153,6 @@ public class PixService {
         return pixRepository.salvar(transacaoSuspeita);
     }
 
-    /**
-     * Seleciona a estratégia de validação com base no horário atual.
-     *
-     * Padrão Strategy (Behavioral):
-     * - Período diurno (06h às 20h): ValidadorLimiteDiurno
-     * - Período noturno (20h às 06h): ValidadorLimiteNoturno
-     *
-     * @param agora Data e hora atual.
-     * @return Estratégia de validação apropriada para o horário.
-     */
-    private ValidadorPix selecionarValidador(LocalDateTime agora) {
-        int hora = agora.getHour();
-        return (hora >= 6 && hora < 20) ? validadorDiurno : validadorNoturno;
-    }
+    
+   
 }

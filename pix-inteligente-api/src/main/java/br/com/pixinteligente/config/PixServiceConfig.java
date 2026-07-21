@@ -4,8 +4,12 @@ import br.com.pixinteligente.pagamentopix.domain.repository.PixRepository;
 import br.com.pixinteligente.pagamentopix.domain.service.PixService;
 import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorLimiteDiurno;
 import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorLimiteNoturno;
+import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorPixComPeriodo;
+import br.com.pixinteligente.pagamentopix.domain.strategy.SeletorDeValidador;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * Configuração dos beans do domínio de Pagamento Pix.
@@ -30,7 +34,7 @@ public class PixServiceConfig {
      * @return Instância do validador diurno.
      */
     @Bean
-    public ValidadorLimiteDiurno validadorLimiteDiurno() {
+    public ValidadorPixComPeriodo validadorLimiteDiurno() {
         return new ValidadorLimiteDiurno();
     }
 
@@ -40,26 +44,36 @@ public class PixServiceConfig {
      * @return Instância do validador noturno.
      */
     @Bean
-    public ValidadorLimiteNoturno validadorLimiteNoturno() {
+    public ValidadorPixComPeriodo validadorLimiteNoturno() {
         return new ValidadorLimiteNoturno();
+    }
+
+    /**
+     * Registra o SeletorDeValidador como bean singleton,
+     * coletando todos os beans do tipo ValidadorPixComPeriodo.
+     *
+     * @param validadores Lista de todos os validadores injetados automaticamente pelo Spring.
+     * @return Instância do SeletorDeValidador.
+     */
+    @Bean
+    public SeletorDeValidador seletorDeValidador(List<ValidadorPixComPeriodo> validadores) {
+        return new SeletorDeValidador(validadores);
     }
 
     /**
      * Registra o PixService como bean singleton.
      *
-     * Injeta o PixRepository (porta) e os validadores via construtor.
+     * Injeta o PixRepository (porta) e o SeletorDeValidador via construtor.
      * O Spring resolve automaticamente o PixRepositoryAdapter
      * como implementação concreta de PixRepository.
      *
-     * @param pixRepository    Porta de saída — resolvida pelo Spring como PixRepositoryAdapter.
-     * @param validadorDiurno  Estratégia de validação diurna.
-     * @param validadorNoturno Estratégia de validação noturna.
+     * @param pixRepository       Porta de saída — resolvida pelo Spring como PixRepositoryAdapter.
+     * @param seletorDeValidador  Seletor dinâmico de estratégias de validação.
      * @return Instância do PixService.
      */
     @Bean
     public PixService pixService(PixRepository pixRepository,
-                                 ValidadorLimiteDiurno validadorDiurno,
-                                 ValidadorLimiteNoturno validadorNoturno) {
-        return new PixService(pixRepository, validadorDiurno, validadorNoturno);
+                                 SeletorDeValidador seletorDeValidador) {
+        return new PixService(pixRepository, seletorDeValidador);
     }
 }

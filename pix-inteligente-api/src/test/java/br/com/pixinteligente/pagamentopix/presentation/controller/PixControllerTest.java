@@ -110,7 +110,9 @@ class PixControllerTest {
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.status").value(422))
                 .andExpect(jsonPath("$.mensagem").value(
-                        "Limite Pix excedido. Valor solicitado: R$ 15000.00 | Limite permitido: R$ 10000.00"));
+                        "Limite Pix excedido. Valor solicitado: R$ 15000.00 | Limite permitido: R$ 10000.00"))
+                .andExpect(jsonPath("$.valorSolicitado").value(15000.00))
+                .andExpect(jsonPath("$.limitePermitido").value(10000.00));
     }
 
     @Test

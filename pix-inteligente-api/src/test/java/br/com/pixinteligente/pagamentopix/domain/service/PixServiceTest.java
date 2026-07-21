@@ -7,6 +7,7 @@ import br.com.pixinteligente.pagamentopix.domain.model.Transacao.StatusTransacao
 import br.com.pixinteligente.pagamentopix.domain.repository.PixRepository;
 import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorLimiteDiurno;
 import br.com.pixinteligente.pagamentopix.domain.strategy.ValidadorLimiteNoturno;
+import br.com.pixinteligente.pagamentopix.domain.strategy.SeletorDeValidador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,13 +43,15 @@ class PixServiceTest {
 
 	private ValidadorLimiteDiurno validadorDiurno;
 	private ValidadorLimiteNoturno validadorNoturno;
+	private SeletorDeValidador seletorDeValidador;
 	private PixService pixService;
 
 	@BeforeEach
 	void setUp() {
 		validadorDiurno = new ValidadorLimiteDiurno();
 		validadorNoturno = new ValidadorLimiteNoturno();
-		pixService = new PixService(pixRepository, validadorDiurno, validadorNoturno);
+		seletorDeValidador = new SeletorDeValidador(List.of(validadorDiurno, validadorNoturno));
+		pixService = new PixService(pixRepository, seletorDeValidador);
 	}
 
 	// ==========================================
