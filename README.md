@@ -1,9 +1,20 @@
 # Pix Inteligente API
 
-[![Java Version](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2+-brightgreen?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
-[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20Screaming-blue?style=for-the-badge)](https://blog.cleancoder.com/)
+# Pix Inteligente API
 
+[![Java 21](https://img.shields.io/badge/JAVA-21-E56E25?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/SPRING%20BOOT-3.4.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Google Gemini](https://img.shields.io/badge/GOOGLE%20GEMINI-AI-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
+[![SOLID Principles](https://img.shields.io/badge/PRINCIPLES-SOLID-232F3E?style=for-the-badge&logo=codeforces&logoColor=white)](https://en.wikipedia.org/wiki/SOLID)
+[![Clean Architecture](https://img.shields.io/badge/ARCHITECTURE-CLEAN%20%2B%20SCREAMING-007EC6?style=for-the-badge)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+[![Bootcamp DIO](https://img.shields.io/badge/BOOTCAMP-SANTANDER%202026-E20E17?style=for-the-badge&logo=santander&logoColor=white)](https://www.dio.me/)
+[![JUnit 5](https://img.shields.io/badge/JUNIT%205-TESTING-25A162?style=for-the-badge&logo=junit5&logoColor=white)](https://junit.org/junit5/)
+[![Mockito](https://img.shields.io/badge/MOCKITO-MOCKING-C52F24?style=for-the-badge&logo=mockito&logoColor=white)](https://site.mockito.org/)
+[![AAA Pattern](https://img.shields.io/badge/PATTERN-ARRANGE%20ACT%20ASSERT-00599C?style=for-the-badge)](https://wiki.c2.com/?ArrangeActAssert)
+[![Swagger](https://img.shields.io/badge/OPENAPI-SWAGGER-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://swagger.io/)
+[![Lombok](https://img.shields.io/badge/LOMBOK-REDESIGNED-BC022C?style=for-the-badge&logo=projectlombok&logoColor=white)](https://projectlombok.org/)
+[![Apache Maven](https://img.shields.io/badge/APACHE%20MAVEN-BUILD-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![GoF Design Patterns](https://img.shields.io/badge/DESIGN%20PATTERNS-GoF-4B0082?style=for-the-badge)](https://en.wikipedia.org/wiki/Design_Patterns)
 
 API REST para transferências Pix com validação inteligente via Google Gemini.
 Projeto desenvolvido como desafio de Padrões de Projeto do Bootcamp Santander 2026 - AI Java Back-end (DIO).
