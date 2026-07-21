@@ -56,7 +56,7 @@ O **Pix Inteligente API** simula um sistema bancário de transferências Pix com
 
 | Padrão | Onde foi aplicado |
 |--------|------------------|
-| **Strategy** | `ValidadorPix` — interface funcional com implementações `ValidadorLimiteDiurno` (R$ 10.000,00) e `ValidadorLimiteNoturno` (R$ 1.000,00), selecionadas em runtime pelo horário |
+| **Strategy** | `ValidadorPix` / `ValidadorPixComPeriodo` — estratégias polimórficas de limite (`ValidadorLimiteDiurno` e `ValidadorLimiteNoturno`) selecionadas dinamicamente via `SeletorDeValidador` sem acoplamento rígido, respeitando o princípio Open/Closed (OCP) |
 | **Template Method** | `ServicoNotificacao` — define o esqueleto fixo de notificação (log antes + envio + log depois). `NotificacaoLog` implementa o canal específico |
 
 ---
@@ -109,7 +109,7 @@ Cliente (Swagger UI / Postman)
      │          │  (stub/real API) │
      │          └──────────────────┘
      │
-     │  Padrão Strategy
+     │  Padrão Strategy (via SeletorDeValidador)
      ├──► ValidadorLimiteDiurno  (06h-20h → R$ 10.000,00)
      └──► ValidadorLimiteNoturno (20h-06h → R$  1.000,00)
           │
@@ -288,6 +288,8 @@ Processa uma transferência Pix com validação de limite e análise de fraude v
 {
   "status": 422,
   "mensagem": "Limite Pix excedido. Valor solicitado: R$ 15000.00 | Limite permitido: R$ 10000.00",
+  "valorSolicitado": 15000.00,
+  "limitePermitido": 10000.00,
   "timestamp": "2026-07-18T19:29:30"
 }
 ```
@@ -364,9 +366,11 @@ br.com.pixinteligente
     │   ├── service
     │   │   └── PixService.java       ← Casos de uso + Strategy
     │   └── strategy
+    │       ├── SeletorDeValidador.java  ← Padrão Strategy Selector
     │       ├── ValidadorLimiteDiurno.java
     │       ├── ValidadorLimiteNoturno.java
-    │       └── ValidadorPix.java     ← @FunctionalInterface
+    │       ├── ValidadorPix.java     ← @FunctionalInterface
+    │       └── ValidadorPixComPeriodo.java
     │
     ├── infrastructure                ← DETALHES DE TECNOLOGIA
     │   ├── adapter
@@ -384,6 +388,7 @@ br.com.pixinteligente
         │   └── PixController.java    ← @RestController
         ├── dto
         │   ├── ErroResponse.java     ← Record Java 21
+        │   ├── LimiteExcedidoResponse.java ← Record Java 21
         │   ├── PixRequest.java       ← Record Java 21 + Bean Validation
         │   └── PixResponse.java      ← Record Java 21
         ├── facade
