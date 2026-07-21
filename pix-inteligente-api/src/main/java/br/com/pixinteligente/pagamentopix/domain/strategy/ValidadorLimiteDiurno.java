@@ -1,8 +1,6 @@
 package br.com.pixinteligente.pagamentopix.domain.strategy;
 
-import br.com.pixinteligente.pagamentopix.domain.model.Transacao;
-
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * Estratégia de validação do limite diurno para transações Pix.
@@ -17,32 +15,15 @@ import java.math.BigDecimal;
  *
  * @author Golbery Santos
  */
-public class ValidadorLimiteDiurno implements ValidadorPix {
-
-    /**
-     * Limite máximo permitido para transações Pix no período diurno.
-     * BigDecimal garante precisão na comparação de valores monetários.
-     */
-    private static final BigDecimal LIMITE_DIURNO = new BigDecimal("10000.00");
-
-    /**
-     * Valida se o valor da transação está dentro do limite diurno permitido.
-     *
-     * @param transacao Transação a ser validada.
-     * @return true se o valor for menor ou igual a R$ 10.000,00.
-     */
-    @Override
-    public boolean validar(Transacao transacao) {
-        return transacao.getValor().compareTo(LIMITE_DIURNO) <= 0;
+public class ValidadorLimiteDiurno implements ValidadorPixComPeriodo {
+    public boolean aceitaHorario(LocalDateTime agora) {
+        int hora = agora.getHour();
+        return hora >= 6 && hora < 20;
     }
 
-    /**
-     * Retorna o limite máximo permitido por esta estratégia.
-     * Utilizado pelo serviço para compor a mensagem de erro.
-     *
-     * @return Limite diurno em BigDecimal.
-     */
-    public BigDecimal getLimite() {
-        return LIMITE_DIURNO;
-    }
+	@Override
+	public ValidadorPix getValidador() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

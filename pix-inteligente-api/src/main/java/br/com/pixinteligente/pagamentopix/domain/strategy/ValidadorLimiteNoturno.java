@@ -1,8 +1,6 @@
 package br.com.pixinteligente.pagamentopix.domain.strategy;
 
-import br.com.pixinteligente.pagamentopix.domain.model.Transacao;
-
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * Estratégia de validação do limite noturno para transações Pix.
@@ -17,32 +15,15 @@ import java.math.BigDecimal;
  *
  * @author Golbery Santos
  */
-public class ValidadorLimiteNoturno implements ValidadorPix {
-
-    /**
-     * Limite máximo permitido para transações Pix no período noturno.
-     * Valor reduzido como medida de segurança contra fraudes noturnas.
-     */
-    private static final BigDecimal LIMITE_NOTURNO = new BigDecimal("1000.00");
-
-    /**
-     * Valida se o valor da transação está dentro do limite noturno permitido.
-     *
-     * @param transacao Transação a ser validada.
-     * @return true se o valor for menor ou igual a R$ 1.000,00.
-     */
-    @Override
-    public boolean validar(Transacao transacao) {
-        return transacao.getValor().compareTo(LIMITE_NOTURNO) <= 0;
+public class ValidadorLimiteNoturno implements ValidadorPixComPeriodo {
+    public boolean aceitaHorario(LocalDateTime agora) {
+        int hora = agora.getHour();
+        return hora >= 20 || hora < 6;
     }
 
-    /**
-     * Retorna o limite máximo permitido por esta estratégia.
-     * Utilizado pelo serviço para compor a mensagem de erro.
-     *
-     * @return Limite noturno em BigDecimal.
-     */
-    public BigDecimal getLimite() {
-        return LIMITE_NOTURNO;
-    }
+	@Override
+	public ValidadorPix getValidador() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
