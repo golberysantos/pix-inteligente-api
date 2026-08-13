@@ -17,7 +17,7 @@
 [![GoF Design Patterns](https://img.shields.io/badge/DESIGN%20PATTERNS-GoF-4B0082?style=for-the-badge)](https://en.wikipedia.org/wiki/Design_Patterns)
 
 API REST para transferências Pix com validação inteligente via Google Gemini.
-Projeto desenvolvido como desafio de projeto Design Patterns com Java: Dos Clássicos (GoF) ao Spring Framework do Bootcamp Santander 2026 - AI Java Back-end.
+Projeto desenvolvido como desafio de projeto Design Patterns com Java: Dos Clássicos (GoF) ao Spring Framework.
 
 O **Pix Inteligente** é um sistema de transferências financeiras (Pix) com um motor de validação baseado em Inteligência Artificial. A aplicação analisa padrões de transações em tempo real utilizando a **API do Gemini** (Google) para detectar potenciais fraudes ou anomalias antes de aprovar a transferência.
 
