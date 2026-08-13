@@ -1,7 +1,5 @@
 # Pix Inteligente API
 
-# Pix Inteligente API
-
 [![Java 21](https://img.shields.io/badge/JAVA-21-E56E25?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/SPRING%20BOOT-3.4.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Google Gemini](https://img.shields.io/badge/GOOGLE%20GEMINI-AI-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
